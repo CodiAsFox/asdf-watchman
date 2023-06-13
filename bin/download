@@ -21,6 +21,8 @@ download_release "$ASDF_INSTALL_VERSION" "$release_file"
 echo "Extracting $release_file to $ASDF_DOWNLOAD_PATH"
 unzip -d "$ASDF_DOWNLOAD_PATH" "$release_file" && f=("$ASDF_DOWNLOAD_PATH"/*) && mv "$ASDF_DOWNLOAD_PATH"/*/* "$ASDF_DOWNLOAD_PATH" && rmdir "${f[@]}"
 chmod +x "$ASDF_DOWNLOAD_PATH/bin/${TOOL_NAME}"
+ls
+echo $release_file
 
 # Remove the tar.gz file since we don't need to keep it
 rm "$release_file"
