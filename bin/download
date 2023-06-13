@@ -25,7 +25,7 @@ mv "$temp"/*/* "$ASDF_DOWNLOAD_PATH" && rmdir "$temp"/* "$temp"
 echo "DOWNLOAD PATH: $ASDF_DOWNLOAD_PATH"
 ls $ASDF_DOWNLOAD_PATH
 
-chmod +x "$ASDF_DOWNLOAD_PATH/bin/${TOOL_NAME}"
+chmod +x "$ASDF_DOWNLOAD_PATH/bin/$TOOL_NAME"
 
 # Remove the tar.gz file since we don't need to keep it
 rm "$release_file"
