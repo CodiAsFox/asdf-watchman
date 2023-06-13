@@ -58,7 +58,7 @@ download_release() {
 	platform=$(get_platform)
 	
 	# TODO: Adapt the release URL convention for watchman
-	url="$GH_REPO/releases/download/${version}/watchman-${version}-${platform}.zip"
+	url="$GH_REPO/releases/download/v${version}/watchman-v${version}-${platform}.zip"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
