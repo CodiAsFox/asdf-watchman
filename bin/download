@@ -18,6 +18,7 @@ download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
 #  Extract contents of tar.gz file into the download directory
 # tar -xzf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+echo "Extracting $release_file to $ASDF_DOWNLOAD_PATH"
 unzip $release_file -d "$ASDF_DOWNLOAD_PATH" || fail "Could not extract $release_file"
 chmod +x "$ASDF_DOWNLOAD_PATH/bin/${TOOL_NAME}"
 
