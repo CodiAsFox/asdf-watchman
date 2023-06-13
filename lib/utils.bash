@@ -78,8 +78,8 @@ install_version() {
 	fi
 
 	(
-		mkdir -p "$install_path"/bin
-		cp -r "$ASDF_DOWNLOAD_PATH/bin/$TOOL_NAME" "$install_path/bin/$TOOL_NAME"
+		mkdir -p "$install_path"
+		cp -r "$ASDF_DOWNLOAD_PATH"* "$install_path"
 
 		# TODO: Assert watchman executable exists.
 		local tool_cmd
