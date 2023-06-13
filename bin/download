@@ -22,6 +22,8 @@ echo "Extracting $release_file to $ASDF_DOWNLOAD_PATH"
 
 temp=$(mktemp -d) && unzip -d "$temp" "$release_file" && mkdir -p "$ASDF_DOWNLOAD_PATH" &&
 mv "$temp"/*/* "$ASDF_DOWNLOAD_PATH" && rmdir "$temp"/* "$temp"
+echo "DOWNLOAD PATH: $ASDF_DOWNLOAD_PATH"
+ls $ASDF_DOWNLOAD_PATH
 
 chmod +x "$ASDF_DOWNLOAD_PATH/bin/${TOOL_NAME}"
 
