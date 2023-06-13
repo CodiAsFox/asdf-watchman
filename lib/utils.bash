@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for watchman.
-GH_REPO="https://github.com/jepify/watchman"
+GH_REPO="https://github.com/facebook/watchman"
 TOOL_NAME="watchman"
 TOOL_TEST="watchman version"
 
@@ -36,17 +36,34 @@ list_all_versions() {
 	list_github_tags
 }
 
+get_platform() {
+  local platform=""
+
+  case "$(uname | tr '[:upper:]' '[:lower:]')" in
+    darwin) platform="macos" ;;
+    linux) platform="linux" ;;
+    windows) platform="windows" ;;
+    *)
+      fail "Platform '$(uname -m)' not supported!"
+      ;;
+  esac
+
+  echo -n $platform
+}
+
 download_release() {
 	local version filename url
 	version="$1"
 	filename="$2"
-
+	platform=$(get_platform)
+	
 	# TODO: Adapt the release URL convention for watchman
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	url="$GH_REPO/releases/download/${version}/watchman-${version}-${platform}.zip"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
+
 
 install_version() {
 	local install_type="$1"
@@ -64,7 +81,7 @@ install_version() {
 		# TODO: Assert watchman executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
-		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
+		test -x "$install_path/bin/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
 	) || (
