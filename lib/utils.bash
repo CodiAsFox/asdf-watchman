@@ -68,7 +68,7 @@ download_release() {
 install_version() {
 	local install_type="$1"
 	local version="$2"
-	local install_path="${3%/bin}"
+	local install_path="$3"
 	echo "INSTALL TYPE: $install_type"
 	echo "VERSION: $version"
 	echo "INSTALL PATH: $install_path"
@@ -78,7 +78,7 @@ install_version() {
 	fi
 
 	(
-		mkdir -p "$install_path"
+		mkdir -p "$install_path"/bin
 		cp -r "$ASDF_DOWNLOAD_PATH/bin/$TOOL_NAME" "$install_path/bin/$TOOL_NAME"
 
 		# TODO: Assert watchman executable exists.
