@@ -73,24 +73,27 @@ ensure_build_dependencies() {
       echo "Homebrew is not installed. Please install it first: https://brew.sh/"
       exit 1
     fi
-    brew install cmake autoconf automake libtool pcre pkg-config googletest --quiet
+    brew install cmake autoconf automake libtool pcre pkg-config gflags glog --quiet
     ;;
+
   linux)
     if command -v apt >/dev/null; then
       sudo apt update
-      sudo apt install -y autoconf cmake automake libtool pkg-config libpcre3-dev googletest
-      echo "⚠️ Note: On Ubuntu/Debian, googletest installs headers only. You may need to build it manually."
+      sudo apt install -y autoconf cmake automake libtool pkg-config libpcre3-dev libgflags-dev libgoogle-glog-dev googletest
+      echo "⚠️  Note: On Debian/Ubuntu, googletest installs headers only. You may need to manually build libgtest.a:"
+      echo "  cd /usr/src/googletest && sudo cmake . && sudo make && sudo cp lib/*.a /usr/lib"
     elif command -v dnf >/dev/null; then
-      sudo dnf install -y autoconf cmake automake libtool pkgconf-pkg-config pcre-devel gtest-devel gmock-devel
+      sudo dnf install -y autoconf cmake automake libtool pkgconf-pkg-config pcre-devel gflags-devel glog-devel gtest-devel gmock-devel
     elif command -v pacman >/dev/null; then
-      sudo pacman -Sy --noconfirm cmake autoconf automake libtool pkgconf pcre gtest
+      sudo pacman -Sy --noconfirm cmake autoconf automake libtool pkgconf pcre gflags glog gtest
     else
-      echo "Unsupported Linux distro. Please install cmake, autoconf, automake, libtool, pkg-config, pcre, and GoogleTest manually."
+      echo "Unsupported Linux distro. Please install: cmake autoconf automake libtool pkg-config pcre gflags glog googletest"
       exit 1
     fi
     ;;
+
   *)
-    echo "Unsupported platform: $platform"
+    echo "❌ Unsupported platform: $platform"
     exit 1
     ;;
   esac
