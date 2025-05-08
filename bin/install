@@ -73,19 +73,19 @@ ensure_build_dependencies() {
       echo "Homebrew is not installed. Please install it first: https://brew.sh/"
       exit 1
     fi
-    brew install cmake autoconf automake libtool pcre pkg-config --quiet
+    brew install cmake autoconf automake libtool pcre pkg-config googletest --quiet
     ;;
   linux)
     if command -v apt >/dev/null; then
       sudo apt update
-      sudo apt install -y autoconf cmake automake libtool pkg-config libpcre3-dev
+      sudo apt install -y autoconf cmake automake libtool pkg-config libpcre3-dev googletest
+      echo "⚠️ Note: On Ubuntu/Debian, googletest installs headers only. You may need to build it manually."
     elif command -v dnf >/dev/null; then
-      sudo dnf install -y autoconf cmake automake libtool pkgconf-pkg-config pcre-devel
+      sudo dnf install -y autoconf cmake automake libtool pkgconf-pkg-config pcre-devel gtest-devel gmock-devel
     elif command -v pacman >/dev/null; then
-      sudo pacman -Sy --noconfirm cmake autoconf automake libtool pkgconf pcre
+      sudo pacman -Sy --noconfirm cmake autoconf automake libtool pkgconf pcre gtest
     else
-      echo "Unsupported Linux distro. Install the following manually:"
-      echo "autoconf automake libtool pkg-config pcre (and dev headers)"
+      echo "Unsupported Linux distro. Please install cmake, autoconf, automake, libtool, pkg-config, pcre, and GoogleTest manually."
       exit 1
     fi
     ;;
@@ -116,8 +116,13 @@ install_version() {
   (
     cd "$ASDF_DOWNLOAD_PATH"
 
-    echo "📁 Running cmake from: $(pwd)"
-    cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$install_path"
+    echo "Running cmake from: $(pwd)"
+    local gtest_path="$(brew --prefix)/opt/googletest"
+
+    cmake -S . -B build \
+      -DCMAKE_INSTALL_PREFIX="$install_path" \
+      -DGTEST_ROOT="$gtest_path" \
+      -DGMOCK_ROOT="$gtest_path"
     cmake --build build
     cmake --install build
 
