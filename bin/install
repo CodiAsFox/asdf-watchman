@@ -59,7 +59,6 @@ download_release() {
   local filename="$2"
 
   echo "* Cloning Watchman v$version from source..."
-  git clone --depth=1 --branch "v$version" https://github.com/facebook/watchman.git "$ASDF_DOWNLOAD_PATH"
 }
 
 ensure_build_dependencies() {
@@ -71,7 +70,7 @@ ensure_build_dependencies() {
   case "$platform" in
   darwin)
     if ! command -v brew >/dev/null; then
-      echo "⚠️  Homebrew is not installed. Please install it first: https://brew.sh/"
+      echo "Homebrew is not installed. Please install it first: https://brew.sh/"
       exit 1
     fi
     brew install cmake autoconf automake libtool pcre pkg-config --quiet
@@ -85,13 +84,13 @@ ensure_build_dependencies() {
     elif command -v pacman >/dev/null; then
       sudo pacman -Sy --noconfirm cmake autoconf automake libtool pkgconf pcre
     else
-      echo "⚠️  Unsupported Linux distro. Install the following manually:"
+      echo "Unsupported Linux distro. Install the following manually:"
       echo "autoconf automake libtool pkg-config pcre (and dev headers)"
       exit 1
     fi
     ;;
   *)
-    echo "❌ Unsupported platform: $platform"
+    echo "Unsupported platform: $platform"
     exit 1
     ;;
   esac
@@ -102,14 +101,22 @@ install_version() {
   local version="$2"
   local install_path="$3"
 
-  if [ "$install_type" != "version" ]; then
-    fail "asdf-$TOOL_NAME supports release installs only"
+  if [[ "$version" =~ ^[0-4]\. || "$version" =~ ^201[0-9] || "$version" =~ ^2020 ]]; then
+    fail "Watchman v$version is too old. Use v2021+ with CMake support."
   fi
 
   echo "* Installing Watchman $version..."
+  if [ ! -f "$ASDF_DOWNLOAD_PATH/CMakeLists.txt" ]; then
+    echo "Cloning Watchman v$version into $ASDF_DOWNLOAD_PATH..."
+    git clone --depth=1 --branch "v$version" https://github.com/facebook/watchman.git "$ASDF_DOWNLOAD_PATH"
+  fi
+
   ensure_build_dependencies
 
   (
+    cd "$ASDF_DOWNLOAD_PATH"
+
+    echo "📁 Running cmake from: $(pwd)"
     cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$install_path"
     cmake --build build
     cmake --install build

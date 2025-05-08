@@ -1,17 +1,5 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
-current_script_path=${BASH_SOURCE[0]}
-plugin_dir=$(dirname "$(dirname "$current_script_path")")
-
-# Optional: source helper utilities if needed
-# source "${plugin_dir}/lib/utils.bash"
-
-mkdir -p "$ASDF_DOWNLOAD_PATH"
-
-echo "Cloning source into $ASDF_DOWNLOAD_PATH"
-# download_release should have already cloned it, nothing else needed here.
-
-echo "Contents of $ASDF_DOWNLOAD_PATH:"
-ls -la "$ASDF_DOWNLOAD_PATH"
+echo "Cloning Watchman v$ASDF_INSTALL_VERSION into $ASDF_DOWNLOAD_PATH..."
+git clone --depth=1 --branch "v$ASDF_INSTALL_VERSION" https://github.com/facebook/watchman.git "$ASDF_DOWNLOAD_PATH"

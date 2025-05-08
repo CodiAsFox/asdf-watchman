@@ -1,60 +1,98 @@
 <div align="center">
 
-# asdf-watchman [![Build](https://github.com/jepify/asdf-watchman/actions/workflows/build.yml/badge.svg)](https://github.com/jepify/asdf-watchman/actions/workflows/build.yml) [![Lint](https://github.com/jepify/asdf-watchman/actions/workflows/lint.yml/badge.svg)](https://github.com/jepify/asdf-watchman/actions/workflows/lint.yml)
 
-[watchman](https://github.com/jepify/watchman) plugin for the [asdf version manager](https://asdf-vm.com).
+# asdf-watchman
+[![Build](https://github.com/CodiAsFox/asdf-watchman/actions/workflows/build.yml/badge.svg)](https://github.com/CodiAsFox/asdf-watchman/actions/workflows/build.yml)
+[![Lint](https://github.com/CodiAsFox/asdf-watchman/actions/workflows/lint.yml/badge.svg)](https://github.com/CodiAsFox/asdf-watchman/actions/workflows/lint.yml)
+
+An [asdf](https://asdf-vm.com) plugin for installing [Watchman](https://facebook.github.io/watchman/), a file watching service developed by Facebook.
 
 </div>
 
-# Contents
+---
 
-- [Dependencies](#dependencies)
-- [Install](#install)
+## Contents
+
+- [asdf-watchman](#asdf-watchman)
+  - [Contents](#contents)
+  - [Dependencies](#dependencies)
+    - [macOS](#macos)
+    - [Linux](#linux)
+  - [Install](#install)
+  - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 
-# Dependencies
+---
 
-**TODO: adapt this section**
+## Dependencies
 
-- `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+This plugin builds Watchman from source. You will need:
 
-# Install
+### macOS
 
-Plugin:
+- [Homebrew](https://brew.sh)
+- `cmake`, `autoconf`, `automake`, `libtool`, `pcre`, `pkg-config`
 
-```shell
-asdf plugin add watchman
-# or
-asdf plugin add watchman https://github.com/jepify/asdf-watchman.git
+```sh
+brew install cmake autoconf automake libtool pcre pkg-config
 ```
 
-watchman:
+### Linux
 
-```shell
-# Show all installable versions
+- Install the following using your package manage (e.g., apt, dnf, or pacman):
+-	cmake, autoconf, automake, libtool, pkg-config, pcre (plus dev headers)
+
+Example (Debian/Ubuntu):
+
+```sh
+sudo apt update
+sudo apt install -y cmake autoconf automake libtool pkg-config libpcre3-dev
+```
+---
+
+## Install
+
+Add plugin:
+
+```sh
+asdf plugin add watchman https://github.com/CodiAsFox/asdf-watchman.git
+```
+
+Install watchman:
+
+```sh
+# List available versions
 asdf list-all watchman
 
-# Install specific version
-asdf install watchman latest
+# Install a specific version (must be v2021+)
+asdf install watchman 2023.09.25.00
 
-# Set a version globally (on your ~/.tool-versions file)
-asdf global watchman latest
+# Set it globally
+asdf global watchman 2023.09.25.00
 
-# Now watchman commands are available
-watchman version
+# Verify
+watchman --version
 ```
 
-Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
-install & manage versions.
+---
+
+## Usage
+
+This plugin supports Watchman versions 2021+ only. Older versions using autogen.sh are not supported due to incompatibility with the modern CMake build system.
+
+---
 
 # Contributing
 
 Contributions of any kind welcome! See the [contributing guide](contributing.md).
 
-[Thanks goes to these contributors](https://github.com/jepify/asdf-watchman/graphs/contributors)!
+[Thanks goes to these contributors](https://github.com/CodiAsFox/asdf-watchman/graphs/contributors)!
+
+---
 
 # License
 
-See [LICENSE](LICENSE) © [Jeppe Kristensen](https://github.com/jepify/)
+See [LICENSE](LICENSE) © [Taylor Jay Fox](https://github.com/CodiAsFox/)
+
+Forked from [Jeppe Kristensen](https://github.com/jepify/asdf-watchman)

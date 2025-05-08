@@ -6,7 +6,7 @@ Testing Locally:
 asdf plugin test <plugin-name> <plugin-url> [--asdf-tool-version <version>] [--asdf-plugin-gitref <git-ref>] [test-command*]
 
 # TODO: adapt this
-asdf plugin test watchman https://github.com/jepify/asdf-watchman.git "watchman version"
+asdf plugin test watchman https://github.com/CodiAsFox/asdf-watchman.git "watchman version"
 ```
 
 Tests are automatically run in GitHub Actions on push and PR.
